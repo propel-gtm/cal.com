@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import type { UseFormGetValues, UseFormSetValue, Control, FormState } from "react-hook-form";
 import type { MultiValue } from "react-select";
@@ -28,6 +28,7 @@ import { SettingsToggle } from "@calcom/ui/components/form";
 import { Skeleton } from "@calcom/ui/components/skeleton";
 
 import Locations from "@calcom/web/modules/event-types/components/locations/Locations";
+import { DEFAULT_EVENT_DURATION_OPTIONS } from "@calcom/web/modules/event-types/components/durationOptions";
 
 export type EventSetupTabCustomClassNames = {
   wrapper?: string;
@@ -71,6 +72,7 @@ export const EventSetupTab = (
   const isPlatform = useIsPlatform();
   const formMethods = useFormContext<FormValues>();
   const { eventType, team, urlPrefix, hasOrgBranding, customClassNames, orgId } = props;
+  const durationListId = useId();
 
   const [multipleDuration, setMultipleDuration] = useState(
     formMethods.getValues("metadata")?.multipleDuration
@@ -295,6 +297,7 @@ export const EventSetupTab = (
               {...(isManagedEventType || isChildrenManagedEventType ? lengthLockedProps : {})}
               label={t("duration")}
               defaultValue={formMethods.getValues("length") ?? 15}
+              list={durationListId}
               {...formMethods.register("length", {
                 valueAsNumber: true,
                 min: {
@@ -310,6 +313,11 @@ export const EventSetupTab = (
               min={MIN_EVENT_DURATION_MINUTES}
               max={MAX_EVENT_DURATION_MINUTES}
             />
+            <datalist id={durationListId}>
+              {DEFAULT_EVENT_DURATION_OPTIONS.map((minutes) => (
+                <option key={minutes} value={minutes} />
+              ))}
+            </datalist>
           )}
           {!lengthLockedProps.disabled && (
             <div className="mt-4! [&_label]:my-1 [&_label]:font-normal">

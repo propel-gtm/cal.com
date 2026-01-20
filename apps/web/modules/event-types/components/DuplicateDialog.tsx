@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -22,6 +22,7 @@ import { Form } from "@calcom/ui/components/form";
 import { TextField } from "@calcom/ui/components/form";
 import { showToast } from "@calcom/ui/components/toast";
 import { revalidateEventTypesList } from "@calcom/web/app/(use-page-wrapper)/(main-nav)/event-types/actions";
+import { DEFAULT_EVENT_DURATION_OPTIONS } from "@calcom/web/modules/event-types/components/durationOptions";
 
 const querySchema = z.object({
   title: z.string().min(1),
@@ -41,6 +42,7 @@ const DuplicateDialog = () => {
   const { t } = useLocale();
   const router = useRouter();
   const [firstRender, setFirstRender] = useState(true);
+  const durationListId = useId();
   const {
     data: { pageSlug, slug, ...defaultValues },
   } = useTypedQuery(querySchema);
@@ -180,9 +182,15 @@ const DuplicateDialog = () => {
                 min="1"
                 placeholder="15"
                 label={t("duration")}
+                list={durationListId}
                 {...register("length", { valueAsNumber: true })}
                 addOnSuffix={t("minutes")}
               />
+              <datalist id={durationListId}>
+                {DEFAULT_EVENT_DURATION_OPTIONS.map((minutes) => (
+                  <option key={minutes} value={minutes} />
+                ))}
+              </datalist>
             </div>
           </div>
           <DialogFooter showDivider className="mt-10">
