@@ -1,0 +1,1 @@
+export const DEFAULT_EVENT_DURATION_OPTIONS = [15, 30, 45, 60, 90, 120];

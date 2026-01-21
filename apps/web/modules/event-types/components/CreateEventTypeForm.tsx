@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useId, useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
 
 import { useIsPlatform } from "@calcom/atoms/hooks/useIsPlatform";
@@ -14,6 +14,8 @@ import { Form } from "@calcom/ui/components/form";
 import { TextAreaField } from "@calcom/ui/components/form";
 import { TextField } from "@calcom/ui/components/form";
 import { Tooltip } from "@calcom/ui/components/tooltip";
+
+import { DEFAULT_EVENT_DURATION_OPTIONS } from "@calcom/web/modules/event-types/components/durationOptions";
 
 export default function CreateEventTypeForm({
   form,
@@ -34,6 +36,7 @@ export default function CreateEventTypeForm({
 }) {
   const isPlatform = useIsPlatform();
   const { t } = useLocale();
+  const durationListId = useId();
   const [firstRender, setFirstRender] = useState(true);
 
   const { register } = form;
@@ -133,6 +136,7 @@ export default function CreateEventTypeForm({
               placeholder="15"
               label={t("duration")}
               className="pr-4"
+              list={durationListId}
               {...register("length", {
                 valueAsNumber: true,
                 min: {
@@ -146,6 +150,11 @@ export default function CreateEventTypeForm({
               })}
               addOnSuffix={t("minutes").toLowerCase()}
             />
+            <datalist id={durationListId}>
+              {DEFAULT_EVENT_DURATION_OPTIONS.map((minutes) => (
+                <option key={minutes} value={minutes} />
+              ))}
+            </datalist>
           </div>
         </>
       </div>
