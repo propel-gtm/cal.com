@@ -285,39 +285,41 @@ export const EventSetupTab = (
               </div>
             </div>
           ) : (
-            <TextField
-              required
-              type="number"
-              containerClassName={classNames(
-                customClassNames?.durationSection?.singleDurationInput?.container
-              )}
-              labelClassName={classNames(customClassNames?.durationSection?.singleDurationInput?.label)}
-              className={classNames(customClassNames?.durationSection?.singleDurationInput?.input)}
-              data-testid="duration"
-              {...(isManagedEventType || isChildrenManagedEventType ? lengthLockedProps : {})}
-              label={t("duration")}
-              defaultValue={formMethods.getValues("length") ?? 15}
-              list={durationListId}
-              {...formMethods.register("length", {
-                valueAsNumber: true,
-                min: {
-                  value: MIN_EVENT_DURATION_MINUTES,
-                  message: t("duration_min_error", { min: MIN_EVENT_DURATION_MINUTES }),
-                },
-                max: {
-                  value: MAX_EVENT_DURATION_MINUTES,
-                  message: t("duration_max_error", { max: MAX_EVENT_DURATION_MINUTES }),
-                },
-              })}
-              addOnSuffix={<>{t("minutes")}</>}
-              min={MIN_EVENT_DURATION_MINUTES}
-              max={MAX_EVENT_DURATION_MINUTES}
-            />
-            <datalist id={durationListId}>
-              {DEFAULT_EVENT_DURATION_OPTIONS.map((minutes) => (
-                <option key={minutes} value={minutes} />
-              ))}
-            </datalist>
+            <>
+              <TextField
+                required
+                type="number"
+                containerClassName={classNames(
+                  customClassNames?.durationSection?.singleDurationInput?.container
+                )}
+                labelClassName={classNames(customClassNames?.durationSection?.singleDurationInput?.label)}
+                className={classNames(customClassNames?.durationSection?.singleDurationInput?.input)}
+                data-testid="duration"
+                {...(isManagedEventType || isChildrenManagedEventType ? lengthLockedProps : {})}
+                label={t("duration")}
+                defaultValue={formMethods.getValues("length") ?? 15}
+                list={durationListId}
+                {...formMethods.register("length", {
+                  valueAsNumber: true,
+                  min: {
+                    value: MIN_EVENT_DURATION_MINUTES,
+                    message: t("duration_min_error", { min: MIN_EVENT_DURATION_MINUTES }),
+                  },
+                  max: {
+                    value: MAX_EVENT_DURATION_MINUTES,
+                    message: t("duration_max_error", { max: MAX_EVENT_DURATION_MINUTES }),
+                  },
+                })}
+                addOnSuffix={<>{t("minutes")}</>}
+                min={MIN_EVENT_DURATION_MINUTES}
+                max={MAX_EVENT_DURATION_MINUTES}
+              />
+              <datalist id={durationListId}>
+                {DEFAULT_EVENT_DURATION_OPTIONS.map((minutes) => (
+                  <option key={minutes} value={minutes} />
+                ))}
+              </datalist>
+            </>
           )}
           {!lengthLockedProps.disabled && (
             <div className="mt-4! [&_label]:my-1 [&_label]:font-normal">
