@@ -722,7 +722,10 @@ function FieldEditDialog({
                               return undefined;
                             }
                             const parsed = Number(value);
-                            return Number.isNaN(parsed) ? undefined : parsed;
+                            if (Number.isNaN(parsed) || !Number.isInteger(parsed) || parsed < 1) {
+                              return undefined;
+                            }
+                            return parsed;
                           },
                         })}
                         containerClassName="mt-6"
